@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateFragments(){
         fragmentList.add(ActiveChatFragment.newInstance());
         fragmentList.add(ActiveChatFragment.newInstance());
+        fragmentList.add(ActiveChatFragment.newInstance());
         mPagerAdapter.notifyDataSetChanged();
     }
 
