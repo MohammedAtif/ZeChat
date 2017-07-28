@@ -40,7 +40,8 @@ public class ActiveChatFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
-        if(arguments != null){
+        if (arguments != null) {
+
             //TODO initialize your variables here
         }
     }
@@ -49,7 +50,7 @@ public class ActiveChatFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_active_chat_layout, container, false);
+        return inflater.inflate(R.layout.fragment_blank, container, false);
     }
 
 }
