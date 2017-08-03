@@ -5,6 +5,9 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="5dp"
     cardview:cardCornerRadius="2dp"
+    android:focusableInTouchMode="false"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true"
     cardview:cardElevation="3dp"
     cardview:cardUseCompatPadding="true">
 
@@ -31,6 +34,7 @@
             android:layout_toEndOf="@+id/thumbnail">
 
             <TextView
+                android:focusableInTouchMode="true"
                 android:paddingStart="2dp"
                 android:paddingEnd="2dp"
                 android:id="@+id/title"

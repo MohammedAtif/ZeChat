@@ -8,20 +8,27 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import zechat.android.training.zemoso.zechat.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
+
 public class ActiveChatFragment extends Fragment {
 
+    //region variables
     private Context mContext;
+    //endregion
 
+    //region public constructor
     public ActiveChatFragment() {
         // Required empty public constructor
     }
+    //endregion
 
+    //region creating new Instance
     public static ActiveChatFragment newInstance() {
         Bundle args = new Bundle();
         //TODO: Set your variable values here
@@ -29,7 +36,9 @@ public class ActiveChatFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+    //endregion
 
+    //region Inherited Methods
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -53,4 +62,8 @@ public class ActiveChatFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_blank, container, false);
     }
 
+    //endregion
+    public void forceCrash(View view) {
+        throw new RuntimeException("This is a crash");
+    }
 }

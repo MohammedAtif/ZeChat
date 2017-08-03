@@ -7,10 +7,12 @@ import zechat.android.training.zemoso.zechat.R;
 
 public class Splash extends FullScreenActivity {
 
+    //region Inherited Methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
     }
 
     @Override
@@ -19,4 +21,7 @@ public class Splash extends FullScreenActivity {
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }
+    //endregion
+
 }
+

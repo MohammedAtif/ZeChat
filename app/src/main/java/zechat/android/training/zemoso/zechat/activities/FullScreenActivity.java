@@ -12,8 +12,12 @@ import android.view.WindowManager;
  */
 
 public class FullScreenActivity extends AppCompatActivity {
-    private View decorView;
 
+    // region Variables
+    private View decorView;
+    //endregion
+
+    //region Inherited Methods
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +42,9 @@ public class FullScreenActivity extends AppCompatActivity {
             HideStatusBars();
         }
     }
+    // endregion
 
+    // region Private Methods
     private void HideStatusBars(){
         decorView.setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -49,5 +55,7 @@ public class FullScreenActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
     }
+    //endregion
+
 }
 

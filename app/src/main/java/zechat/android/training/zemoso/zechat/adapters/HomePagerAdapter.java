@@ -13,13 +13,18 @@ import java.util.List;
 
 public class HomePagerAdapter extends FragmentStatePagerAdapter {
 
+    //region Variables
     private List<Fragment> fragmentList;
+    //endregion
 
+    //region Public Constructor
     public HomePagerAdapter(@NonNull FragmentManager fm, @NonNull List<Fragment> fragmentList) {
         super(fm);
         this.fragmentList = fragmentList;
     }
+    //endregion
 
+    //region Inherited Methods
     @Override
     public Fragment getItem(int position) {
         return fragmentList.get(position
@@ -35,4 +40,6 @@ public class HomePagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         return fragmentList.get(position).getClass().getSimpleName();
     }
+    //endregion
+
 }
