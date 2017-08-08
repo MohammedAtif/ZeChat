@@ -7,4 +7,13 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+
+    <!-- "Mark Favorite", should appear as action button if possible -->
+    <item
+        android:id="@+id/action_favorite"
+        android:icon="@mipmap/ic_edit"
+        android:checked="true"
+        android:title="Edit"
+        app:showAsAction="ifRoom"
+        android:visible="false" />
 </menu>

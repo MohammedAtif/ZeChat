@@ -3,17 +3,19 @@
     xmlns:cardview="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp"
-    cardview:cardCornerRadius="2dp"
-    android:focusableInTouchMode="false"
     android:foreground="?android:attr/selectableItemBackground"
     android:clickable="true"
     cardview:cardElevation="3dp"
-    cardview:cardUseCompatPadding="true">
-
+    cardview:cardCornerRadius="2dp"
+    android:layout_marginBottom="3dp">
+    //cardview:cardUseCompatPadding="true"-->
+    <!-- android:foreground="?android:attr/selectableItemBackground"-->
+    <!-- android:layout_marginBottom="5dp"
+     cardview:cardCornerRadius="2dp"-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="73dp"
+        android:background="@drawable/selector_row"
         android:weightSum="3">
 
         <ImageView
@@ -35,8 +37,8 @@
 
             <TextView
                 android:focusableInTouchMode="true"
-                android:paddingStart="2dp"
-                android:paddingEnd="2dp"
+                android:paddingStart="7dp"
+                android:paddingEnd="7dp"
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -45,12 +47,12 @@
                 android:fontFamily="sans-serif"
                 android:textSize="20sp"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:textColor="#444"
+                android:textColor="@android:color/black"
                 android:textStyle="normal" />
 
             <TextView
-                android:paddingStart="2dp"
-                android:paddingEnd="2dp"
+                android:paddingStart="7dp"
+                android:paddingEnd="7dp"
                 android:id="@+id/status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(tag, "relam closed");
     }
 
-    @Override
+  /*  @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
         return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
-
+*/
     //endregion
 
     //region Private Methods

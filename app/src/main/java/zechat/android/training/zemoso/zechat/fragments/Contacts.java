@@ -1,17 +1,26 @@
 package zechat.android.training.zemoso.zechat.fragments;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Switch;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -30,13 +39,14 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import zechat.android.training.zemoso.zechat.Model.ContactInfo;
 import zechat.android.training.zemoso.zechat.R;
+import zechat.android.training.zemoso.zechat.activities.EditContact;
 import zechat.android.training.zemoso.zechat.adapters.ContactsAdapter;
 import zechat.android.training.zemoso.zechat.utils.ZeChatApplication;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Contacts extends Fragment {
+public class Contacts extends Fragment implements ContactsAdapter.AdapterInterface {
 
     //region variables
     private Context mContext;
@@ -45,7 +55,8 @@ public class Contacts extends Fragment {
     private ContactsAdapter mAdapter;
     Realm bgRealm;
     final LinearLayoutManager layoutManager;
-    ContactInfo contact;
+    ContactInfo contact, recievedContact;
+    Bundle bundle;
     public static final String TAG = Contacts.class.getSimpleName();
     //endregion
 
@@ -82,10 +93,12 @@ public class Contacts extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contacts_layout, container, false);
+        setHasOptionsMenu(true);
+        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         recyclerView = view.findViewById(R.id.recycler_view);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new ContactsAdapter();
+        mAdapter = new ContactsAdapter(toolbar, recyclerView, this, mAdapter);
         recyclerView.setAdapter(mAdapter);
         return view;
     }
@@ -94,6 +107,35 @@ public class Contacts extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_main, menu);
+        mAdapter.setMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                // User chose the "Settings" item, show the app settings UI...
+                return true;
+
+            case R.id.action_favorite:
+                Toast.makeText(getContext(), "Edit Contact", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), EditContact.class);
+                bundle = new Bundle();
+                bundle.putString("contact_name", recievedContact.getName());
+                bundle.putString("contact_id", recievedContact.getId());
+                bundle.putString("contact_status", recievedContact.getStatus());
+                intent.putExtras(bundle);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -142,33 +184,29 @@ public class Contacts extends Fragment {
     public void downloadData() {
         // Tag used to cancel the request
         String tag_json_arry = "json_array_req";
-        //String url = "http://10.0.2.2:3000/contact";
-        String url = "http://10.0.2.2:3000/contact";
+        // String url = "http://10.0.2.2:3000/contact";
+        String url = "http://192.168.1.124:3000/contact";
+        bgRealm = Realm.getDefaultInstance();
         JsonArrayRequest req = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         Log.d(TAG, response.toString());
-                        bgRealm = Realm.getDefaultInstance();
-                        bgRealm.beginTransaction();
                         try {
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject jsonObject = response.getJSONObject(i);
-                                try {
                                     contact = new ContactInfo();
                                     contact.setName(jsonObject.getString("name"));
                                     contact.setStatus(jsonObject.getString("status"));
                                     contact.setId(jsonObject.getString("id"));
+                                bgRealm.beginTransaction();
                                     bgRealm.insertOrUpdate(contact);
+                                bgRealm.commitTransaction();
                                     Log.d("splash", bgRealm.where(ContactInfo.class).findAll().toString());
-                                } catch (Exception e) {
-                                    bgRealm.cancelTransaction();
                                 }
-                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        bgRealm.commitTransaction();
                         RealmResults<ContactInfo> entries = bgRealm.where(ContactInfo.class).findAll();
                         contactList = new ArrayList<>(entries);
                         mAdapter.addList(contactList);
@@ -177,9 +215,17 @@ public class Contacts extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
+                RealmResults<ContactInfo> entries = bgRealm.where(ContactInfo.class).findAll();
+                contactList = new ArrayList<>(entries);
+                mAdapter.addList(contactList);
             }
         });
         ZeChatApplication.getInstance().addToRequestQueue(req, tag_json_arry);
+    }
+
+    @Override
+    public void sendContact(ContactInfo contact) {
+        this.recievedContact = contact;
     }
 //endregion
 
